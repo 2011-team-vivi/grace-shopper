@@ -1,18 +1,77 @@
 'use strict'
 
 const db = require('../server/db')
-const {User} = require('../server/db/models')
+const {User, Event, Card, Order} = require('../server/db/models')
+const faker = require('faker')
 
 async function seed() {
   await db.sync({force: true})
   console.log('db synced!')
 
-  const users = await Promise.all([
-    User.create({email: 'cody@email.com', password: '123'}),
-    User.create({email: 'murphy@email.com', password: '123'})
-  ])
+  const userPromises = []
+
+  const createFakeUser = () => ({
+    firstName: faker.name.firstName(),
+    lastName: faker.name.lastName(),
+    isAdmin: false,
+    email: faker.internet.email(),
+    password: faker.internet.password(),
+    phoneNumber: faker.phone.phoneNumberFormat(),
+    lastLogin: faker.date.recent()
+  })
+
+  const desiredFakeUsers = 100
+
+  for (let i = 0; i < desiredFakeUsers; i++) {
+    userPromises.push(User.create(createFakeUser()))
+  }
+  const users = await Promise.all(userPromises)
+
+  const eventPromises = []
+  const createFakeEvents = () => ({
+    title: faker.company.companyName(),
+    date: faker.date.soon(),
+    location: `${faker.address.city()}, ${faker.address.stateAbbr()}`,
+    description: faker.commerce.productDescription(),
+    price: faker.commerce.price(),
+    quantityOfTickets: Math.floor(Math.random() * 100),
+    imageURL: faker.image.nightlife(),
+    isFeatured: false
+  })
+
+  const desiredFakeEvents = 100
+
+  for (let i = 0; i < desiredFakeEvents; i++) {
+    eventPromises.push(Event.create(createFakeEvents()))
+  }
+
+  const events = await Promise.all(eventPromises)
+
+  const cardTypes = ['MasterCard', 'Visa', 'Discover', 'Amex']
+  const cardPromises = []
+  const createFakeCards = () => ({
+    nameOnCard: `${faker.name.firstName()} ${faker.name.lastName()}`,
+    cardType: cardTypes[Math.floor(Math.random() * 4)],
+    cardNumber: faker.finance.creditCardNumber(),
+    CVV: faker.finance.creditCardCVV(),
+    expiration: faker.date.future(),
+    billingStreet: faker.address.streetAddress(),
+    billingCity: faker.address.city(),
+    billingState: faker.address.stateAbbr(),
+    billingZip: faker.address.zipCodeByState().split('-')[0]
+  })
+
+  const desiredFakeCards = 100
+  for (let i = 0; i < desiredFakeCards; i++) {
+    const usersCard = Card.create(createFakeCards())
+    cardPromises.push(usersCard.setUser(users[i]))
+  }
+
+  const cards = await Promise.all(cardPromises)
 
   console.log(`seeded ${users.length} users`)
+  console.log(`seeded ${events.length} events`)
+  console.log(`seeded ${cards.length} cards`)
   console.log(`seeded successfully`)
 }
 
