@@ -21,12 +21,9 @@ const User = db.define('user', {
     type: Sequelize.BOOLEAN
   },
   phoneNumber: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.STRING,
     validate: {
-      min: 1000000000,
-      max: 9999999999,
-      len: [10, 10],
-      isNumeric: true
+      len: [12, 12]
     }
   },
   lastLogin: {
@@ -35,7 +32,11 @@ const User = db.define('user', {
   email: {
     type: Sequelize.STRING,
     unique: true,
-    allowNull: false
+    allowNull: false,
+    validate: {
+      isEmail: true,
+      notEmpty: true
+    }
   },
   password: {
     type: Sequelize.STRING,
@@ -56,7 +57,7 @@ const User = db.define('user', {
   googleId: {
     type: Sequelize.STRING
   },
-  cartId: {
+  orderId: {
     type: Sequelize.INTEGER
   }
 })

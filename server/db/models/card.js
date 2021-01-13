@@ -18,11 +18,10 @@ const Card = db.define('card', {
     }
   },
   cardNumber: {
-    type: Sequelize.BIGINT,
+    type: Sequelize.STRING,
     allowNull: false,
     validate: {
-      notEmpty: true,
-      len: [16, 17]
+      notEmpty: true
     }
   },
   CVV: {
@@ -30,7 +29,7 @@ const Card = db.define('card', {
     allowNull: false,
     validate: {
       notEmpty: true,
-      len: [2, 5] //check for inclulsive or not
+      len: [3, 4]
     }
   },
   expiration: {
@@ -38,7 +37,6 @@ const Card = db.define('card', {
     allowNull: false,
     validate: {
       notEmpty: true
-      //make sure its not exipred
     }
   },
   billingStreet: {

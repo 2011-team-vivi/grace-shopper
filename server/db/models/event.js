@@ -10,14 +10,7 @@ const Event = db.define('event', {
     }
   },
   date: {
-    type: Sequelize.DATEONLY,
-    allowNull: false,
-    validate: {
-      notEmpty: true
-    }
-  },
-  time: {
-    type: Sequelize.TIME,
+    type: Sequelize.DATE,
     allowNull: false,
     validate: {
       notEmpty: true
@@ -56,7 +49,7 @@ const Event = db.define('event', {
     },
     defaultValue: 'https://static.dw.com/image/18920718_303.jpg'
   },
-  quantity: {
+  quantityOfTickets: {
     type: Sequelize.INTEGER,
     allowNull: false,
     validate: {
