@@ -1,7 +1,7 @@
 'use strict'
 
 const db = require('../server/db')
-const {User, Event, Card, Order} = require('../server/db/models')
+const {User, Event, Order, OrderEvent} = require('../server/db/models')
 const faker = require('faker')
 
 async function seed() {
@@ -20,58 +20,75 @@ async function seed() {
     lastLogin: faker.date.recent()
   })
 
-  const desiredFakeUsers = 100
+  const user = await User.create(createFakeUser())
 
-  for (let i = 0; i < desiredFakeUsers; i++) {
-    userPromises.push(User.create(createFakeUser()))
-  }
-  const users = await Promise.all(userPromises)
+  const order = await Order.create({status: 'pending'})
 
-  const eventPromises = []
-  const createFakeEvents = () => ({
-    title: faker.company.companyName(),
-    date: faker.date.soon(),
-    location: `${faker.address.city()}, ${faker.address.stateAbbr()}`,
-    description: faker.commerce.productDescription(),
-    price: faker.commerce.price(),
-    quantityOfTickets: Math.floor(Math.random() * 100),
-    imageURL: faker.image.nightlife(),
-    isFeatured: false
+  order.setUser(user)
+
+  const event = await Event.create(createFakeEvents())
+  console.log('idssssssssss', event.id, user.id)
+  const orderEvent = await OrderEvent.create({
+    ticketQuantity: 2,
+    purchasePrice: 2000,
+    orderId: user.id,
+    eventId: event.id
   })
 
-  const desiredFakeEvents = 100
+  // const desiredFakeUsers = 100
 
-  for (let i = 0; i < desiredFakeEvents; i++) {
-    eventPromises.push(Event.create(createFakeEvents()))
+  // for (let i = 0; i < desiredFakeUsers; i++) {
+  //   userPromises.push(User.create(createFakeUser()))
+  // }
+  // const users = await Promise.all(userPromises)
+
+  // const eventPromises = []
+  function createFakeEvents() {
+    return {
+      title: faker.company.companyName(),
+      date: faker.date.soon(),
+      location: `${faker.address.city()}, ${faker.address.stateAbbr()}`,
+      description: faker.commerce.productDescription(),
+      price: Math.floor(Math.random() * 1000),
+      ticketQuantity: Math.floor(Math.random() * 100),
+      imageURL: faker.image.nightlife(),
+      isFeatured: false
+    }
   }
 
-  const events = await Promise.all(eventPromises)
+  // const desiredFakeEvents = 100
 
-  const cardTypes = ['MasterCard', 'Visa', 'Discover', 'Amex']
-  const cardPromises = []
-  const createFakeCards = () => ({
-    nameOnCard: `${faker.name.firstName()} ${faker.name.lastName()}`,
-    cardType: cardTypes[Math.floor(Math.random() * 4)],
-    cardNumber: faker.finance.creditCardNumber(),
-    CVV: faker.finance.creditCardCVV(),
-    expiration: faker.date.future(),
-    billingStreet: faker.address.streetAddress(),
-    billingCity: faker.address.city(),
-    billingState: faker.address.stateAbbr(),
-    billingZip: faker.address.zipCodeByState().split('-')[0]
-  })
+  // for (let i = 0; i < desiredFakeEvents; i++) {
+  //   eventPromises.push(Event.create(createFakeEvents()))
+  // }
 
-  const desiredFakeCards = 100
-  for (let i = 0; i < desiredFakeCards; i++) {
-    const usersCard = Card.create(createFakeCards())
-    cardPromises.push(usersCard.setUser(users[i]))
-  }
+  // const events = await Promise.all(eventPromises)
 
-  const cards = await Promise.all(cardPromises)
+  // const cardTypes = ['MasterCard', 'Visa', 'Discover', 'Amex']
+  // const cardPromises = []
+  // const createFakeCards = () => ({
+  //   nameOnCard: `${faker.name.firstName()} ${faker.name.lastName()}`,
+  //   cardType: cardTypes[Math.floor(Math.random() * 4)],
+  //   cardNumber: faker.finance.creditCardNumber(),
+  //   CVV: faker.finance.creditCardCVV(),
+  //   expiration: faker.date.future(),
+  //   billingStreet: faker.address.streetAddress(),
+  //   billingCity: faker.address.city(),
+  //   billingState: faker.address.stateAbbr(),
+  //   billingZip: faker.address.zipCodeByState().split('-')[0]
+  // })
 
-  console.log(`seeded ${users.length} users`)
-  console.log(`seeded ${events.length} events`)
-  console.log(`seeded ${cards.length} cards`)
+  // const desiredFakeCards = 100
+  // for (let i = 0; i < desiredFakeCards; i++) {
+  //   const usersCard = Card.create(createFakeCards())
+  //   cardPromises.push(usersCard.setUser(users[i]))
+  // }
+
+  // const cards = await Promise.all(cardPromises)
+
+  // console.log(`seeded ${users.length} users`)
+  // console.log(`seeded ${events.length} events`)
+  // console.log(`seeded ${cards.length} cards`)
   console.log(`seeded successfully`)
 }
 

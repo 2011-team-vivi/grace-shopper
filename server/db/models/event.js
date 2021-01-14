@@ -24,7 +24,7 @@ const Event = db.define('event', {
     }
   },
   price: {
-    type: Sequelize.FLOAT,
+    type: Sequelize.INTEGER,
     allowNull: false,
     validate: {
       notEmpty: true
@@ -49,7 +49,7 @@ const Event = db.define('event', {
     },
     defaultValue: 'https://static.dw.com/image/18920718_303.jpg'
   },
-  quantityOfTickets: {
+  ticketQuantity: {
     type: Sequelize.INTEGER,
     allowNull: false,
     validate: {

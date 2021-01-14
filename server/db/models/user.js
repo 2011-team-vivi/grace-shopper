@@ -17,6 +17,12 @@ const User = db.define('user', {
       notEmpty: true
     }
   },
+  fullName: {
+    type: Sequelize.VIRTUAL,
+    get() {
+      return this.firstName + ' ' + this.lastName
+    }
+  },
   isAdmin: {
     type: Sequelize.BOOLEAN
   },
@@ -26,9 +32,7 @@ const User = db.define('user', {
       len: [12, 12]
     }
   },
-  lastLogin: {
-    type: Sequelize.DATE
-  },
+
   email: {
     type: Sequelize.STRING,
     unique: true,
@@ -56,9 +60,6 @@ const User = db.define('user', {
   },
   googleId: {
     type: Sequelize.STRING
-  },
-  orderId: {
-    type: Sequelize.INTEGER
   }
 })
 
