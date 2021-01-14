@@ -1,7 +1,8 @@
 const User = require('./user')
 const Event = require('./event')
 //const Card = require('./card')
-const Order = require('./cart')
+const Order = require('./order')
+const OrderEvent = require('./orderEvent')
 
 /**
  * If we had any associations to make, this would be a great place to put them!
@@ -23,12 +24,13 @@ Order.belongsTo(User)
 // User.hasMany(Card)
 // Card.belongsTo(User)
 
-Event.belongsToMany(Order, {through: 'OrderEvent'})
-Order.belongsToMany(Event, {through: 'OrderEvent'})
+Event.belongsToMany(Order, {through: OrderEvent})
+Order.belongsToMany(Event, {through: OrderEvent})
 
 module.exports = {
   User,
   Event,
   // Card,
+  OrderEvent,
   Order
 }
