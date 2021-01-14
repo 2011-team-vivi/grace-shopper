@@ -27,7 +27,6 @@ async function seed() {
   order.setUser(user)
 
   const event = await Event.create(createFakeEvents())
-  console.log('idssssssssss', event.id, user.id)
   const orderEvent = await OrderEvent.create({
     ticketQuantity: 2,
     purchasePrice: 2000,
