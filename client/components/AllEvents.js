@@ -1,5 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import {Link} from 'react-router-dom'
 import {fetchEvents} from '../store/events'
 
 export class AllEvents extends React.Component {
@@ -26,13 +27,31 @@ export class AllEvents extends React.Component {
                   <div>
                     <img
                       src={event.imageURL}
-                      style={{width: '200px', height: '250px'}}
+                      style={{width: '200px', height: '200px'}}
                     />
                   </div>
-
-                  <div>Date and Time: {event.date}</div>
+                  <div>
+                    <strong>{event.title}</strong>
+                  </div>
+                  <div>
+                    Date and Time:
+                    {event.date.toLocaleString('en-US', {
+                      weekday: 'long',
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric'
+                    })}
+                  </div>
                   <div>Location : {event.location}</div>
-                  <div>Price : {event.price}</div>
+                  <div>Price : ${event.price}</div>
+
+                  <button
+                    type="button"
+                    className="details"
+                    onClick={() => <Link to={`/events/${event.eventId}`} />}
+                  >
+                    Details
+                  </button>
                   <br />
                 </div>
               )
