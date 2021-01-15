@@ -41,12 +41,12 @@ async function seed() {
   function createFakeEvents() {
     return {
       title: faker.company.companyName(),
-      date: faker.date.soon(),
+      date: faker.date.future(),
       location: `${faker.address.city()}, ${faker.address.stateAbbr()}`,
       description: faker.commerce.productDescription(),
       price: Math.floor(Math.random() * 1000),
       ticketQuantity: Math.floor(Math.random() * 100),
-      imageURL: faker.image.nightlife(),
+      imageURL: faker.image.imageUrl(),
       isFeatured: false
     }
   }
