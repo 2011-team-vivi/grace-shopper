@@ -46,8 +46,7 @@ const Event = db.define('event', {
     allowNull: false,
     validate: {
       isURL: true
-    },
-    defaultValue: 'https://static.dw.com/image/18920718_303.jpg'
+    }
   },
   ticketQuantity: {
     type: Sequelize.INTEGER,
