@@ -1,4 +1,5 @@
 'use strict'
+//adfadfadf
 
 const db = require('../server/db')
 const {User, Event, Order, OrderEvent} = require('../server/db/models')
@@ -31,7 +32,7 @@ async function seed() {
   const order = await Order.create({status: 'pending'})
 
   order.setUser(user)
-  
+
   /* --------------------events---------------------------*/
 
   const event = await Event.create(createFakeEvents())
