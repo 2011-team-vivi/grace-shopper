@@ -27,14 +27,26 @@ async function seed() {
   order.setUser(user)
 
   const event = await Event.create(createFakeEvents())
+  await Event.create(createFakeEvents())
+  await Event.create(createFakeEvents())
   console.log('idssssssssss', event.id, user.id)
-  const orderEvent = await OrderEvent.create({
-    ticketQuantity: 2,
-    purchasePrice: 2000,
-    orderId: user.id,
-    eventId: event.id
+  // const orderEvent = await OrderEvent.create({
+  //   ticketQuantity: 2,
+  //   purchasePrice: 2000,
+  //   orderId: user.id,
+  //   eventId: event.id,
+  // })
+  await order.addEvent(event, {
+    through: {ticketQuantity: 2, purchasePrice: 2000}
   })
 
+  // let result = await Order.findAll({
+  //   include: Event,
+  // })
+  // console.log(result[0].dataValues.events)
+
+  // result = await OrderEvent.findAll({include: Order})
+  // console.log('22222222222', result) // -> order is not associated to orderEvent
   // const desiredFakeUsers = 100
 
   // for (let i = 0; i < desiredFakeUsers; i++) {
