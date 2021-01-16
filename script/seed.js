@@ -7,8 +7,8 @@ const faker = require('faker')
 async function seed() {
   await db.sync({force: true})
   console.log('db synced!')
-
-  const userPromises = []
+  /* --------------------users---------------------------*/
+  const usersCreated = []
 
   const createFakeUser = () => ({
     firstName: faker.name.firstName(),
@@ -22,62 +22,54 @@ async function seed() {
 
   const user = await User.create(createFakeUser())
 
+  for (let i = 0; i < 100; i++) {
+    usersCreated.push(User.create(createFakeUser()))
+  }
+
+  const users = await Promise.all(usersCreated)
+  /* --------------------orders---------------------------*/
   const order = await Order.create({status: 'pending'})
 
   order.setUser(user)
+  
+  /* --------------------events---------------------------*/
 
   const event = await Event.create(createFakeEvents())
-  await Event.create(createFakeEvents())
-  await Event.create(createFakeEvents())
-  console.log('idssssssssss', event.id, user.id)
-  // const orderEvent = await OrderEvent.create({
-  //   ticketQuantity: 2,
-  //   purchasePrice: 2000,
-  //   orderId: user.id,
-  //   eventId: event.id,
-  // })
-  await order.addEvent(event, {
-    through: {ticketQuantity: 2, purchasePrice: 2000}
-  })
 
-  // let result = await Order.findAll({
-  //   include: Event,
-  // })
-  // console.log(result[0].dataValues.events)
+  const eventsCreated = []
 
-  // result = await OrderEvent.findAll({include: Order})
-  // console.log('22222222222', result) // -> order is not associated to orderEvent
-  // const desiredFakeUsers = 100
-
-  // for (let i = 0; i < desiredFakeUsers; i++) {
-  //   userPromises.push(User.create(createFakeUser()))
-  // }
-  // const users = await Promise.all(userPromises)
-
-  // const eventPromises = []
   function createFakeEvents() {
     return {
       title: faker.company.companyName(),
-      date: faker.date.soon(),
+      date: faker.date.future(),
       location: `${faker.address.city()}, ${faker.address.stateAbbr()}`,
       description: faker.commerce.productDescription(),
       price: Math.floor(Math.random() * 1000),
       ticketQuantity: Math.floor(Math.random() * 100),
-      imageURL: faker.image.nightlife(),
+      imageURL: faker.image.imageUrl(),
       isFeatured: false
     }
   }
 
-  // const desiredFakeEvents = 100
+  for (let i = 0; i < 100; i++) {
+    eventsCreated.push(Event.create(createFakeEvents()))
+  }
 
-  // for (let i = 0; i < desiredFakeEvents; i++) {
-  //   eventPromises.push(Event.create(createFakeEvents()))
-  // }
+  const events = await Promise.all(eventsCreated)
 
-  // const events = await Promise.all(eventPromises)
+  /* --------------------orderEvents---------------------------*/
+
+  const orderEvent = await OrderEvent.create({
+    ticketQuantity: 2,
+    purchasePrice: 2000,
+    orderId: user.id,
+    eventId: event.id
+  })
+
+  /* --------------------cards(tier 2)---------------------------*/
 
   // const cardTypes = ['MasterCard', 'Visa', 'Discover', 'Amex']
-  // const cardPromises = []
+  // const cardsCreated = []
   // const createFakeCards = () => ({
   //   nameOnCard: `${faker.name.firstName()} ${faker.name.lastName()}`,
   //   cardType: cardTypes[Math.floor(Math.random() * 4)],
@@ -90,16 +82,15 @@ async function seed() {
   //   billingZip: faker.address.zipCodeByState().split('-')[0]
   // })
 
-  // const desiredFakeCards = 100
-  // for (let i = 0; i < desiredFakeCards; i++) {
+  // for (let i = 0; i < 100; i++) {
   //   const usersCard = Card.create(createFakeCards())
   //   cardPromises.push(usersCard.setUser(users[i]))
   // }
 
-  // const cards = await Promise.all(cardPromises)
+  // const cards = await Promise.all(cardsCreated)
 
-  // console.log(`seeded ${users.length} users`)
-  // console.log(`seeded ${events.length} events`)
+  console.log(`seeded ${users.length} users`)
+  console.log(`seeded ${events.length} events`)
   // console.log(`seeded ${cards.length} cards`)
   console.log(`seeded successfully`)
 }
