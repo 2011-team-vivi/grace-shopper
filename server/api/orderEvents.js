@@ -8,10 +8,11 @@ router.post('/', async (req, res, next) => {
     console.log('foundddd')
     const {id: orderId} = await Order.findOne({
       where: {
-        userId: 1,
+        userId: req.user.id,
         status: 'pending'
       }
     })
+    console.log(req.body)
     // find the OrderEvent row associated with the eventId that we want to update (if it already exists) or create
     let orderEvent = await OrderEvent.findOne({
       where: {eventId: req.body.eventId, orderId}
@@ -21,7 +22,8 @@ router.post('/', async (req, res, next) => {
       orderEvent = await OrderEvent.create({...req.body, orderId})
     }
     // If it exists, update it with the new ticketQuantity
-    const ticketQuantity = orderEvent.ticketQuantity + req.body.ticketQuantity
+    const ticketQuantity =
+      orderEvent.ticketQuantity + parseInt(req.body.ticketQuantity)
     orderEvent = await orderEvent.update({...req.body, ticketQuantity})
     res.json(orderEvent)
   } catch (error) {

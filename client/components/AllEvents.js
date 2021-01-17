@@ -40,15 +40,11 @@ export class AllEvents extends React.Component {
                     </div>
                     <div>Location : {event.location}</div>
                     <div>Price : ${event.price}</div>
-
-                    <button
-                      type="button"
-                      className="details"
-                      onClick={() => <Link to={`/events/${event.id}`} />}
-                    >
-                      Details
-                    </button>
-
+                    <Link to={`/events/${event.id}`}>
+                      <button type="button" className="details">
+                        Details
+                      </button>
+                    </Link>
                     <br />
                   </div>
                 )
