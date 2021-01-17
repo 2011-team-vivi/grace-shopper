@@ -15,10 +15,12 @@ class Routes extends Component {
 
   render() {
     const {isLoggedIn} = this.props
-
+    // conditionally 'render' rout for guestCart
     return (
       <Switch>
         {/* Routes placed here are available to all visitors */}
+
+        {/* <Route exact path="/guestCart" component={GuestCart} /> */}
         <Route exact path="/events" component={AllEvents} />
         <Route path="/events/:eventId" component={SingleEvent} />
         <Route path="/login" component={Login} />
@@ -28,6 +30,7 @@ class Routes extends Component {
           <Switch>
             {/* Routes placed here are only available after logging in */}
             <Route path="/home" component={UserHome} />
+            {/* <Route path="/userCart" component={UserCart} /> */}
           </Switch>
         )}
         {/* Displays our Login component as a fallback */}

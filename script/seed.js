@@ -31,7 +31,7 @@ async function seed() {
   const order = await Order.create({status: 'pending'})
 
   order.setUser(user)
-
+  
   /* --------------------events---------------------------*/
 
   const event = await Event.create(createFakeEvents())
