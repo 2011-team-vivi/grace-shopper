@@ -44,10 +44,11 @@ export class AllEvents extends React.Component {
                     <button
                       type="button"
                       className="details"
-                      onClick={() => <Link to={`/events/${event.eventId}`} />}
+                      onClick={() => <Link to={`/events/${event.id}`} />}
                     >
                       Details
                     </button>
+
                     <br />
                   </div>
                 )
