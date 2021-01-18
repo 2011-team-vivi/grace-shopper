@@ -36,14 +36,34 @@ export class SingleEvent extends React.Component {
 
   async handleSubmit(e) {
     e.preventDefault()
-
     try {
       await this.setState({
         eventId: this.props.event.id,
         purchasePrice: this.props.event.price,
         addedToCart: true
       })
-      await axios.post(`/api/orderEvents/`, this.state)
+
+      if (this.props.isLoggedIn) {
+        await axios.post(`/api/orderEvents/`, this.state)
+      } else if (!localStorage.getItem(this.state.eventId.toString())) {
+          localStorage.setItem(
+            this.state.eventId.toString(),
+            this.state.ticketQuantity.toString()
+          )
+        } else {
+          const currentTicketQuantity = localStorage.getItem(
+            this.state.eventId.toString()
+          )
+          const newQuantity =
+            parseInt(currentTicketQuantity) +
+            parseInt(this.state.ticketQuantity)
+          localStorage.setItem(
+            this.state.eventId.toString(),
+            newQuantity.toString()
+          )
+        }
+
+      // removing successfully added to cart pop after a second
       setTimeout(() => {
         this.setState({
           addedToCart: false

@@ -22,7 +22,11 @@ class Routes extends Component {
 
         {/* <Route exact path="/guestCart" component={GuestCart} /> */}
         <Route exact path="/events" component={AllEvents} />
-        <Route path="/events/:eventId" component={SingleEvent} />
+        <Route
+          path="/events/:eventId"
+          component={SingleEvent}
+          isLoggedIn={isLoggedIn}
+        />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
 
