@@ -8,3 +8,5 @@ export {default as UserHome} from './user-home'
 export {Login, Signup} from './auth-form'
 export {default as AllEvents} from './AllEvents'
 export {default as SingleEvent} from './SingleEvent'
+export {default as UserCart} from './UserCart'
+

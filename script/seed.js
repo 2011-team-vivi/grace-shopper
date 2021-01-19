@@ -20,18 +20,25 @@ async function seed() {
     lastLogin: faker.date.recent()
   })
 
-  const user = await User.create(createFakeUser())
+  // const user = await User.create(createFakeUser())
 
   for (let i = 0; i < 100; i++) {
-    usersCreated.push(User.create(createFakeUser()))
+    const user = createFakeUser()
+    if (i === 0) console.log(user.email, user.password)
+    usersCreated.push(User.create(user))
   }
 
   const users = await Promise.all(usersCreated)
   /* --------------------orders---------------------------*/
-  const order = await Order.create({status: 'pending'})
+  // const order = await Order.create({status: 'pending'})
 
-  order.setUser(user)
-  
+  // order.setUser(user)
+  const ordersCreated = []
+  for (let user of users) {
+    const order = await Order.create({userId: user.id, status: 'pending'})
+    ordersCreated.push(order)
+  }
+
   /* --------------------events---------------------------*/
 
   const event = await Event.create(createFakeEvents())
@@ -46,7 +53,7 @@ async function seed() {
       description: faker.commerce.productDescription(),
       price: Math.floor(Math.random() * 1000),
       ticketQuantity: Math.floor(Math.random() * 100),
-      imageURL: faker.image.imageUrl(),
+      imageURL: `${faker.image.nightlife()}?random=${Date.now()}`,
       isFeatured: false
     }
   }
@@ -59,12 +66,43 @@ async function seed() {
 
   /* --------------------orderEvents---------------------------*/
 
-  const orderEvent = await OrderEvent.create({
-    ticketQuantity: 2,
-    purchasePrice: 2000,
-    orderId: user.id,
-    eventId: event.id
-  })
+  // const orderEvent = await OrderEvent.create({
+  //   ticketQuantity: 2,
+  //   purchasePrice: 2000,
+  //   orderId: user.id,
+  //   eventId: event.id,
+  // })
+
+  // const orderEventsCreated = []
+
+  // function createFakeOrderEvents() {
+  //   return {
+  //     ticketQuantity: Math.ceil(Math.random() * 10),
+  //     purchasePrice: Math.ceil(Math.random() * 1000),
+  //     orderId: order.id,
+  //     eventId: Math.ceil(Math.random() * 100),
+  //   }
+  // }
+
+  // var arr = []
+  // while (arr.length < 10) {
+  //   var r = Math.ceil(Math.random() * 100)
+  //   if (arr.indexOf(r) === -1) arr.push(r)
+  // }
+
+  for (let order of ordersCreated) {
+    const n = Math.ceil(Math.random() * 10) + 5
+    for (let i = 0; i < n; i++) {
+      await OrderEvent.create({
+        ticketQuantity: Math.ceil(Math.random() * 10),
+        purchasePrice: Math.ceil(Math.random() * 1000),
+        orderId: order.id,
+        eventId: i + 1
+      })
+    }
+  }
+
+  // const orderEvents = await Promise.all(orderEventsCreated)
 
   /* --------------------cards(tier 2)---------------------------*/
 

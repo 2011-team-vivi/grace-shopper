@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {User, Order, OrderEvent} = require('../db/models')
+const {User, Order, OrderEvent, Event} = require('../db/models')
 const auth = require('../middleware/auth') // add this middleware to protected routes
 
 router.get('/', (req, res, next) => {
@@ -11,31 +11,43 @@ router.get('/', (req, res, next) => {
     .catch(next)
 })
 
-router.get('/:orderId', async (req, res, next) => {
+// pending vs :orderId
+router.get('/pending', async (req, res, next) => {
+  //findByPk
   try {
+    // const order = await Order.findByPk(req.params.orderId, {
+    //   include: {model: Event, through: OrderEvent},
+    // })
+    // const order = await Order.findByPk(req.params.orderId, {
+    //   include: {model: OrderEvent, include: {model: Event}},
+    // })
     const order = await Order.findOne({
       where: {
         userId: req.user.id,
         status: 'pending'
       },
-      include: [{model: OrderEvent}]
+      include: {
+        model: OrderEvent,
+        include: {model: Event}
+      },
+      order: [[OrderEvent, 'createdAt', 'DESC']]
     })
-    // Another option to find al the OrderEvent row that belongs to an order
-    // OrderEvent.findAll({where: orderId: order.orderId})
+
+    // Another option to find all the OrderEvent rows that belongs to an order: OrderEvent.findAll({where: orderId: order.orderId})
     res.json(order)
   } catch (error) {
     next(error)
   }
 })
 
-router.delete('/:orderId', (req, res, next) => {
-  Order.destroy({
-    where: {
-      id: req.params.orderId
-    }
-  })
-    .then(() => res.status(204).end())
-    .catch(next)
-})
+// router.delete('/:orderId', (req, res, next) => {
+//   Order.destroy({
+//     where: {
+//       id: req.params.orderId,
+//     },
+//   })
+//     .then(() => res.status(204).end())
+//     .catch(next)
+// })
 
 module.exports = router

@@ -28,6 +28,7 @@ Event.belongsToMany(Order, {through: OrderEvent})
 Order.belongsToMany(Event, {through: OrderEvent})
 Event.hasMany(OrderEvent)
 Order.hasMany(OrderEvent)
+OrderEvent.belongsTo(Event)
 
 module.exports = {
   User,
