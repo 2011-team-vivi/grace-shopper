@@ -2,8 +2,16 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {withRouter, Route, Switch} from 'react-router-dom'
 import PropTypes from 'prop-types'
-import {Login, Signup, UserHome, AllEvents, SingleEvent} from './components'
 import {AddEvent, EditEvent, EventsAdmin, UserInfo} from './components/Admin'
+import {
+  Login,
+  Signup,
+  UserHome,
+  AllEvents,
+  SingleEvent,
+  UserCart,
+  GuestCart
+} from './components'
 import {me} from './store'
 
 /**
@@ -19,6 +27,7 @@ class Routes extends Component {
     const {isAdmin} = this.props
     // conditionally 'render' rout for guestCart
     // same as above for Admin it is an admin only render admin route-s otherwise render other routes
+    // conditionally 'render' route for guestCart
     return (
       <Switch>
         {/* Routes placed here are available to all visitors */}
@@ -35,7 +44,7 @@ class Routes extends Component {
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
 
-        {isLoggedIn && (
+        {isLoggedIn ? (
           <Switch>
             {/* Routes placed here are only available after logging in */}
             <Route path="/home" component={UserHome} />
@@ -47,7 +56,10 @@ class Routes extends Component {
                 <Route path="/events/edit/:eventId" component={EditEvent} />
               </Switch>
             )}
+            <Route path="/userCart" component={UserCart} />
           </Switch>
+        ) : (
+          <Route path="/guestCart" component={GuestCart} />
         )}
         {/* Displays our Login component as a fallback */}
         <Route component={Login} />

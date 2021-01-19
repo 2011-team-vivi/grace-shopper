@@ -8,6 +8,13 @@ const Order = db.define('order', {
       isIn: ['pending', 'complete']
     }
   }
+
+  // total: {
+  //   type: Sequelize.INTEGER,
+  //   get() {
+  //     return this.firstName + ' ' + this.lastName
+  //   },
+  // },
 })
 
 module.exports = Order

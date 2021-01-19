@@ -20,6 +20,7 @@ router.post('/', async (req, res, next) => {
     //If the OrderEvent row doesn't exist, create a new Order Event instance/row
     if (!orderEvent) {
       orderEvent = await OrderEvent.create({...req.body, orderId})
+      return res.json(orderEvent) // return stops the execution
     }
     // If it exists, update it with the new ticketQuantity
     const ticketQuantity =
