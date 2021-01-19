@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {withRouter, Route, Switch} from 'react-router-dom'
 import PropTypes from 'prop-types'
-import {Login, Signup, UserHome, AllEvents, UserCart} from './components'
+import {Login, Signup, UserHome, AllEvents, SingleEvent, UserCart} from './components'
 import {me} from './store'
 
 /**
@@ -22,6 +22,7 @@ class Routes extends Component {
 
         {/* <Route exact path="/guestCart" component={GuestCart} /> */}
         <Route exact path="/events" component={AllEvents} />
+        <Route path="/events/:eventId" component={SingleEvent} />
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
 

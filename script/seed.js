@@ -129,6 +129,7 @@ async function seed() {
 
   console.log(`seeded ${users.length} users`)
   console.log(`seeded ${events.length} events`)
+  console.log(`seeded ${orderEvent.length} events`)
   // console.log(`seeded ${cards.length} cards`)
   console.log(`seeded successfully`)
 }
