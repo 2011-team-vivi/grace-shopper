@@ -20,7 +20,7 @@ export class SingleEvent extends React.Component {
   componentDidMount() {
     try {
       const eventId = this.props.match.params.eventId
-      console.log(eventId)
+
       this.props.getSingleEvent(eventId)
       this.props.getEvents()
     } catch (err) {
@@ -46,22 +46,22 @@ export class SingleEvent extends React.Component {
       if (this.props.isLoggedIn) {
         await axios.post(`/api/orderEvents/`, this.state)
       } else if (!localStorage.getItem(this.state.eventId.toString())) {
-          localStorage.setItem(
-            this.state.eventId.toString(),
-            this.state.ticketQuantity.toString()
-          )
-        } else {
-          const currentTicketQuantity = localStorage.getItem(
-            this.state.eventId.toString()
-          )
-          const newQuantity =
-            parseInt(currentTicketQuantity) +
-            parseInt(this.state.ticketQuantity)
-          localStorage.setItem(
-            this.state.eventId.toString(),
-            newQuantity.toString()
-          )
-        }
+        localStorage.setItem(
+          this.state.eventId.toString(), // Key
+          this.state.ticketQuantity.toString() // Value
+        )
+      } else {
+        // I want to update the value at the key
+        const currentTicketQuantity = localStorage.getItem(
+          this.state.eventId.toString()
+        )
+        const newQuantity =
+          parseInt(currentTicketQuantity) + parseInt(this.state.ticketQuantity)
+        localStorage.setItem(
+          this.state.eventId.toString(),
+          newQuantity.toString()
+        )
+      }
 
       // removing successfully added to cart pop after a second
       setTimeout(() => {
@@ -74,13 +74,16 @@ export class SingleEvent extends React.Component {
     }
   }
   // conditional rednering needed:
-  // if there are no tickets render a soldout
-  // if there are less than three tickets render a almost gone!
-  // if the price is 0 render its freee
+  // if there are no tickets render - soldout
+  // if there are less than three tickets render - almost gone!
+  // if the price is 0 render its - freee
 
   render() {
     const event = this.props.event
+    const isSoldout = event.ticketQuantity === 0
+    const isFree = event.price === 0
     const similiarEvents = this.props.similiarEvents.slice(0, 6)
+    const user = this.props.user
     return (
       <div>
         <h1>{event.title}</h1>
@@ -89,7 +92,7 @@ export class SingleEvent extends React.Component {
         </div>
         <h3> Date and Time: {new Date(event.date).toLocaleString('en-US')}</h3>
         <h4>Location: {event.location}</h4>
-        <h4>Price: ${event.price / 100}</h4>
+        <h4>{isFree ? 'FREE' : `Price: ${event.price / 100}`}</h4>
         <p>Description: {event.description}</p>
         <br />
         {this.state.addedToCart ? (
@@ -99,18 +102,22 @@ export class SingleEvent extends React.Component {
         ) : (
           ''
         )}
-        {/* Form for creating new orderEvent instance*/}
-        <form onSubmit={this.handleSubmit} onChange={this.handleChange}>
-          <label htmlFor="ticketQuantity">quantity: </label>
-          <input
-            type="number"
-            id="quantity"
-            name="ticketQuantity"
-            defaultValue={this.state.ticketQuantity}
-            step="1"
-          />
-          <button type="submit">add to cart</button>
-        </form>
+        {isSoldout ? (
+          <h3>SOLD OUT!</h3>
+        ) : (
+          <form onSubmit={this.handleSubmit} onChange={this.handleChange}>
+            <label htmlFor="ticketQuantity">quantity: </label>
+            <input
+              type="number"
+              id="quantity"
+              name="ticketQuantity"
+              defaultValue={this.state.ticketQuantity}
+              step="1"
+            />
+            <button type="submit">add to cart</button>
+          </form>
+        )}
+
         <br />
         <h2>Similar Events:</h2>
         <hr />
@@ -142,7 +149,8 @@ export class SingleEvent extends React.Component {
 const mapState = state => {
   return {
     event: state.singleEvent,
-    similiarEvents: state.events
+    similiarEvents: state.events,
+    user: state.user
   }
 }
 
