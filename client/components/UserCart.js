@@ -1,11 +1,13 @@
 import React from 'react'
 import axios from 'axios'
 import CartItem from './CartItem'
+import faker from 'faker'
+import {Link} from 'react-router-dom'
 
 class UserCart extends React.Component {
   constructor() {
     super()
-    this.state = {orderEvents: [], order: {}}
+    this.state = {orderEvents: []}
     this.handleChange = this.handleChange.bind(this)
   }
 
@@ -14,19 +16,37 @@ class UserCart extends React.Component {
     this.setState({orderEvents: order.orderEvents, order})
   }
 
-  handleChange(e) {
-    console.log('eventId', e.target.id)
-    // filter events(orderEvents) with the eventid
-    // change the ticketquantity
-    // send put request
-    // setState with the either the result of the request or just target.value
-    // decide between optimistic and pessimistic aupdate
+  async handleChange(e) {
+    const eventId = parseInt(e.target.id)
+    const ticketQuantity = parseInt(e.target.value)
+    let orderEventId
+    const originalOrderEvents = this.state.orderEvents
+    const orderEvents = originalOrderEvents.map(orderEvent => {
+      if (orderEvent.eventId === eventId) {
+        orderEventId = orderEvent.id
+        return {...orderEvent, ticketQuantity}
+      } else return orderEvent
+    })
+    this.setState({orderEvents})
+    try {
+      await axios.put(`/api/orderEvents/${orderEventId}`, {ticketQuantity})
+    } catch (error) {
+      this.setState({orderEvents: originalOrderEvents})
+    }
   }
 
   render() {
-    console.log(this.state)
     return this.state.orderEvents.map(orderEvent => (
-      <CartItem orderEvent={orderEvent} handleChange={this.handleChange} />
+      <>
+        <CartItem
+          orderEvent={orderEvent}
+          handleChange={this.handleChange}
+          key={orderEvent.id.toString()}
+        />
+        <Link to="/userCheckout">
+          <button>Checkout</button>
+        </Link>
+      </>
     ))
   }
 }

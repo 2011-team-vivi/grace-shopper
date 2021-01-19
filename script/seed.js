@@ -53,7 +53,7 @@ async function seed() {
       description: faker.commerce.productDescription(),
       price: Math.floor(Math.random() * 1000),
       ticketQuantity: Math.floor(Math.random() * 100),
-      imageURL: faker.image.imageUrl(),
+      imageURL: `${faker.image.nightlife()}?random=${Date.now()}`,
       isFeatured: false
     }
   }

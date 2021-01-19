@@ -26,7 +26,11 @@ router.get('/pending', async (req, res, next) => {
         userId: req.user.id,
         status: 'pending'
       },
-      include: {model: OrderEvent, include: {model: Event}}
+      include: {
+        model: OrderEvent,
+        include: {model: Event}
+      },
+      order: [[OrderEvent, 'createdAt', 'DESC']]
     })
 
     // Another option to find all the OrderEvent rows that belongs to an order: OrderEvent.findAll({where: orderId: order.orderId})
