@@ -44,6 +44,7 @@ export class SingleEvent extends React.Component {
       })
 
       if (this.props.isLoggedIn) {
+        console.log(this.state)
         await axios.post(`/api/orderEvents/`, this.state)
       } else if (!localStorage.getItem(this.state.eventId.toString())) {
         localStorage.setItem(
@@ -84,6 +85,7 @@ export class SingleEvent extends React.Component {
     const isFree = event.price === 0
     const similiarEvents = this.props.similiarEvents.slice(0, 6)
     const user = this.props.user
+    console.log(this.props.isLoggedIn)
     return (
       <div>
         <h1>{event.title}</h1>
@@ -92,7 +94,7 @@ export class SingleEvent extends React.Component {
         </div>
         <h3> Date and Time: {new Date(event.date).toLocaleString('en-US')}</h3>
         <h4>Location: {event.location}</h4>
-        <h4>{isFree ? 'FREE' : `Price: ${event.price / 100}`}</h4>
+        <h4>{isFree ? 'FREE' : `Price: $${event.price}`}</h4>
         <p>Description: {event.description}</p>
         <br />
         {this.state.addedToCart ? (
@@ -114,6 +116,7 @@ export class SingleEvent extends React.Component {
               defaultValue={this.state.ticketQuantity}
               step="1"
             />
+            {/* Add minimum 1 default value */}
             <button type="submit">add to cart</button>
           </form>
         )}
@@ -150,6 +153,7 @@ const mapState = state => {
   return {
     event: state.singleEvent,
     similiarEvents: state.events,
+    isLoggedIn: !!state.user.id,
     user: state.user
   }
 }
