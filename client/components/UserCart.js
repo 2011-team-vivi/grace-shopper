@@ -41,7 +41,7 @@ class UserCart extends React.Component {
         <CartItem
           orderEvent={orderEvent}
           handleChange={this.handleChange}
-          key={orderEvent.id.toString()}
+          key={(orderEvent.id + 15654684).toString()}
         />
         <Link to="/userCheckout">
           <button>Checkout</button>
