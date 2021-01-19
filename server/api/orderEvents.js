@@ -8,7 +8,7 @@ router.post('/', async (req, res, next) => {
     console.log('foundddd')
     const {id: orderId} = await Order.findOne({
       where: {
-        userId: 1,
+        userId: req.user.id,
         status: 'pending'
       }
     })
@@ -19,6 +19,7 @@ router.post('/', async (req, res, next) => {
     //If the OrderEvent row doesn't exist, create a new Order Event instance/row
     if (!orderEvent) {
       orderEvent = await OrderEvent.create({...req.body, orderId})
+      return res.json(orderEvent) // return stops the execution
     }
     // If it exists, update it with the new ticketQuantity
     const ticketQuantity = orderEvent.ticketQuantity + req.body.ticketQuantity

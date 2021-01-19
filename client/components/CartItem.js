@@ -1,17 +1,19 @@
 import React from 'react'
 
-const CartItem = ({event, quantity}) => {
+const CartItem = ({orderEvent, handleChange}) => {
   return (
     <>
-      <EventCard event={event} />
+      {/* <EventCard event={orderEvent.event} /> */}
 
       <label htmlFor="quantity">Quantity:</label>
       <input
         type="number"
-        id="quantity"
+        id={`${orderEvent.eventId}`}
         name="quantity"
         min="1"
+        onChange={e => handleChange(e)}
         // max="100"
+        value={orderEvent.ticketQuantity}
       />
     </>
   )
