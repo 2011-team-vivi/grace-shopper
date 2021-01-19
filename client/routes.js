@@ -8,7 +8,8 @@ import {
   UserHome,
   AllEvents,
   SingleEvent,
-  UserCart
+  UserCart,
+  GuestCart
 } from './components'
 import {me} from './store'
 
@@ -33,12 +34,14 @@ class Routes extends Component {
         <Route path="/login" component={Login} />
         <Route path="/signup" component={Signup} />
 
-        {isLoggedIn && (
+        {isLoggedIn ? (
           <Switch>
             {/* Routes placed here are only available after logging in */}
             <Route path="/home" component={UserHome} />
             <Route path="/userCart" component={UserCart} />
           </Switch>
+        ) : (
+          <Route path="/guestCart" component={GuestCart} />
         )}
         {/* Displays our Login component as a fallback */}
         <Route component={Login} />

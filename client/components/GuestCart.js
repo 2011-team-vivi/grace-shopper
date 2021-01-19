@@ -1,5 +1,7 @@
 import React from 'react'
 import axios from 'axios'
+import CartItem from './CartItem'
+import {Link} from 'react-router-dom'
 
 class GuestCart extends React.Component {
   constructor() {
@@ -12,14 +14,14 @@ class GuestCart extends React.Component {
     let orderEvents = []
     for (let eventId of Object.keys(localStorage)) {
       const {data: event} = await axios.get(`/api/events/${eventId}`)
-      const ticketQuantity = localStorage[eventId]
+      const ticketQuantity = localStorage.getItem(eventId)
       orderEvents.push({eventId, ticketQuantity, event})
     }
     this.setState({orderEvents})
   }
 
   async handleChange(e) {
-    const eventId = parseInt(e.target.id)
+    const eventId = e.target.id
     const ticketQuantity = parseInt(e.target.value)
     const originalOrderEvents = this.state.orderEvents
     const orderEvents = originalOrderEvents.map(orderEvent => {
@@ -28,22 +30,22 @@ class GuestCart extends React.Component {
       } else return orderEvent
     })
     this.setState({orderEvents})
-    localStorage.setItem(eventId.toString, ticketQuantity.toString())
+    localStorage.setItem(eventId, ticketQuantity)
   }
 
   render() {
-    return (
+    return this.state.orderEvents.map(orderEvent => (
       <>
         <CartItem
           orderEvent={orderEvent}
           handleChange={this.handleChange}
-          key={orderEvent.id.toString()}
+          key={orderEvent.eventId.toString()}
         />
         <Link to="/guestCheckout">
           <button>Checkout</button>
         </Link>
       </>
-    )
+    ))
   }
 }
 
