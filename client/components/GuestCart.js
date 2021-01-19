@@ -34,18 +34,21 @@ class GuestCart extends React.Component {
   }
 
   render() {
-    return this.state.orderEvents.map(orderEvent => (
-      <>
-        <CartItem
-          orderEvent={orderEvent}
-          handleChange={this.handleChange}
-          key={orderEvent.eventId.toString()}
-        />
+    return (
+      <div>
+        {this.state.orderEvents.map(orderEvent => (
+          <CartItem
+            orderEvent={orderEvent}
+            handleChange={this.handleChange}
+            key={orderEvent.eventId.toString()}
+          />
+        ))}
+
         <Link to="/guestCheckout">
           <button>Checkout</button>
         </Link>
-      </>
-    ))
+      </div>
+    )
   }
 }
 
