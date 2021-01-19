@@ -2,31 +2,47 @@ import React from 'react'
 import axios from 'axios'
 
 class GuestCart extends React.Component {
-  state = {
-    events: []
+  constructor() {
+    super()
+    this.state = {orderEvents: []}
+    this.handleChange = this.handleChange.bind(this)
   }
 
   async componentDidMount() {
-    let events = []
+    let orderEvents = []
     for (let eventId of Object.keys(localStorage)) {
       const {data: event} = await axios.get(`/api/events/${eventId}`)
-      event.ticketQuantity = localStorage[eventId]
-      events.push(event)
+      const ticketQuantity = localStorage[eventId]
+      orderEvents.push({eventId, ticketQuantity, event})
     }
-    this.setState({events})
+    this.setState({orderEvents})
+  }
+
+  async handleChange(e) {
+    const eventId = parseInt(e.target.id)
+    const ticketQuantity = parseInt(e.target.value)
+    const originalOrderEvents = this.state.orderEvents
+    const orderEvents = originalOrderEvents.map(orderEvent => {
+      if (orderEvent.eventId === eventId) {
+        return {...orderEvent, ticketQuantity}
+      } else return orderEvent
+    })
+    this.setState({orderEvents})
+    localStorage.setItem(eventId.toString, ticketQuantity.toString())
   }
 
   render() {
-    console.log(this.state)
     return (
-      <div>
-        {this.state.events.map(event => (
-          <p>
-            Title: {event.title} Date: {event.date} Price: {event.price} Qty:
-            {event.ticketQuantity}
-          </p>
-        ))}
-      </div>
+      <>
+        <CartItem
+          orderEvent={orderEvent}
+          handleChange={this.handleChange}
+          key={orderEvent.id.toString()}
+        />
+        <Link to="/guestCheckout">
+          <button>Checkout</button>
+        </Link>
+      </>
     )
   }
 }
