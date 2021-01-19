@@ -19,3 +19,17 @@ form div {
   margin: 1em;
   display: inline-block;
 }
+
+.delete {
+  background-color: lightcoral;
+}
+
+.edit {
+  background-color: lightskyblue;
+}
+
+.add-btn {
+  height: 50px;
+  width: 100px;
+  background-color: orange;
+}

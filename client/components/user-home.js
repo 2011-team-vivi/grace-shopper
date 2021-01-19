@@ -7,9 +7,10 @@ import {connect} from 'react-redux'
  */
 export const UserHome = props => {
   const {email} = props
-
+  const {isAdmin} = props
   return (
     <div>
+      <h1>{isAdmin ? 'ADMIN WORKS!' : ''}</h1>
       <h3>Welcome, {email}</h3>
     </div>
   )
@@ -20,7 +21,8 @@ export const UserHome = props => {
  */
 const mapState = state => {
   return {
-    email: state.user.email
+    email: state.user.email,
+    isAdmin: state.user.isAdmin
   }
 }
 
@@ -30,5 +32,6 @@ export default connect(mapState)(UserHome)
  * PROP TYPES
  */
 UserHome.propTypes = {
-  email: PropTypes.string
+  email: PropTypes.string,
+  isAdmin: PropTypes.string
 }
