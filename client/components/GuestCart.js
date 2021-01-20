@@ -17,7 +17,6 @@ class GuestCart extends React.Component {
     // const obj = JSON.stringify({1: '2', 5: '10'})
     // localStorage.setItem('cart', obj)
 
-
     const cart = JSON.parse(localStorage.getItem('cart'))
     for (let eventId in cart) {
       const {data: event} = await axios.get(`/api/events/${eventId}`)
@@ -31,7 +30,7 @@ class GuestCart extends React.Component {
     localStorage.clear()
   }
 
-  async handleChange(e) {
+  handleChange(e) {
     const {id: eventId, value: ticketQuantity} = e.target
     const originalOrderEvents = this.state.orderEvents
     const orderEvents = originalOrderEvents.map(orderEvent => {
@@ -78,7 +77,7 @@ class GuestCart extends React.Component {
           />
         ))}
 
-        <Link to="/guestCheckout">
+        <Link to="/ConfirmationPage">
           <button onClick={this.handleCheckOut}>Complete Order</button>
         </Link>
       </div>
