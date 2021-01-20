@@ -1,7 +1,7 @@
 import React from 'react'
 import EventCard from './EventCard'
 
-const CartItem = ({orderEvent, handleChange}) => {
+const CartItem = ({orderEvent, handleChange, handleDelete}) => {
   return (
     <div className="cart-item">
       <EventCard event={orderEvent.event} />
@@ -16,6 +16,8 @@ const CartItem = ({orderEvent, handleChange}) => {
         // max="100"
         value={orderEvent.ticketQuantity}
       />
+
+      <button onClick={() => handleDelete(orderEvent)}>Delete</button>
     </div>
   )
 }

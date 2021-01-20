@@ -1,8 +1,8 @@
 const router = require('express').Router()
 const {User, Order, OrderEvent, Event} = require('../db/models')
-const {authenticate, authorize} = require('../middleware/auth') // add this middleware to protected routes
+const {authenticate} = require('../middleware/auth') // add this middleware to protected routes
 
-router.get('/', (req, res, next) => {
+router.get('/:userId', authenticate, (req, res, next) => {
   const {id} = req.user
   Order.findAll({
     where: {userId: id}
@@ -12,7 +12,8 @@ router.get('/', (req, res, next) => {
 })
 
 // pending vs :orderId
-router.get('/pending', async (req, res, next) => {
+router.get('/pending/:userId', authenticate, async (req, res, next) => {
+  console.log('get', req.body)
   //findByPk
   try {
     // const order = await Order.findByPk(req.params.orderId, {
