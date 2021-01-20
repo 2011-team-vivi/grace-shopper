@@ -44,8 +44,8 @@ class UserCart extends React.Component {
           handleChange={this.handleChange}
           key={i}
         />
-        <Link to="/userCheckout">
-          <button>Checkout</button>
+        <Link to="/ConfirmationPage">
+          <button type="button">Complete Order</button>
         </Link>
       </>
     ))

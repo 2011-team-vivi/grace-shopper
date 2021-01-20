@@ -24,6 +24,7 @@ class GuestCart extends React.Component {
     this.setState({orderEvents})
   }
 
+
   async handleChange(e) {
     const {id: eventId, value: ticketQuantity} = e.target
     const originalOrderEvents = this.state.orderEvents

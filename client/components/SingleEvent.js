@@ -3,6 +3,8 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {fetchEvent} from '../store/singleEvent'
 import {fetchEvents} from '../store/events'
+import {SingleEventAdmin} from './Admin'
+import {Link} from 'react-router-dom'
 
 export class SingleEvent extends React.Component {
   constructor(props) {
@@ -88,62 +90,81 @@ export class SingleEvent extends React.Component {
     console.log(this.props.isLoggedIn)
     return (
       <div>
-        <h1>{event.title}</h1>
-        <div>
-          <img src={event.imageURL} style={{width: '400px', height: '400px'}} />
-        </div>
-        <h3> Date and Time: {new Date(event.date).toLocaleString('en-US')}</h3>
-        <h4>Location: {event.location}</h4>
-        <h4>{isFree ? 'FREE' : `Price: $${event.price}`}</h4>
-        <p>Description: {event.description}</p>
-        <br />
-        {this.state.addedToCart ? (
+        {user.isAdmin ? (
+          <SingleEventAdmin />
+        ) : (
           <div>
-            <h2>You added {event.title} to you cart!</h2>
-          </div>
-        ) : (
-          ''
-        )}
-        {isSoldout ? (
-          <h3>SOLD OUT!</h3>
-        ) : (
-          <form onSubmit={this.handleSubmit} onChange={this.handleChange}>
-            <label htmlFor="ticketQuantity">quantity: </label>
-            <input
-              type="number"
-              id="quantity"
-              name="ticketQuantity"
-              defaultValue={this.state.ticketQuantity}
-              step="1"
-            />
-            {/* Add minimum 1 default value */}
-            <button type="submit">add to cart</button>
-          </form>
-        )}
+            <h1>{event.title}</h1>
+            <div>
+              <img
+                src={event.imageURL}
+                style={{width: '400px', height: '400px'}}
+              />
+            </div>
+            <h3>
+              {' '}
+              Date and Time: {new Date(event.date).toLocaleString('en-US')}
+            </h3>
+            <h4>Location: {event.location}</h4>
+            <h4>{isFree ? 'FREE' : `Price: $${event.price}`}</h4>
+            <p>Description: {event.description}</p>
+            <br />
+            {this.state.addedToCart ? (
+              <div>
+                <h2>You added {event.title} to you cart!</h2>
+              </div>
+            ) : (
+              ''
+            )}
+            {isSoldout ? (
+              <h3>SOLD OUT!</h3>
+            ) : (
+              <form onSubmit={this.handleSubmit} onChange={this.handleChange}>
+                <label htmlFor="ticketQuantity">quantity: </label>
+                <input
+                  type="number"
+                  id="quantity"
+                  name="ticketQuantity"
+                  defaultValue={this.state.ticketQuantity}
+                  step="1"
+                />
+                {/* Add minimum 1 default value */}
+                <button type="submit">add to cart</button>
+              </form>
+            )}
 
-        <br />
-        <h2>Similar Events:</h2>
-        <hr />
-        <div>
-          {similiarEvents[0] &&
-            similiarEvents.map(event => {
-              return (
-                <div key={event.title}>
-                  <img
-                    src={event.imageURL}
-                    style={{width: '200px', height: '200px'}}
-                  />
-                  <span>
-                    <div>
-                      <h4>{event.title}</h4>
-                      <h4>{new Date(event.date).toLocaleString('en-US')}</h4>
-                      <h4>{event.location}</h4>
+            {/* <Link to="/events">
+          <button type="button" className="edit">
+            Back to All Events
+          </button> */}
+
+            <br />
+            <h2>Similar Events:</h2>
+            <hr />
+            <div>
+              {similiarEvents[0] &&
+                similiarEvents.map(event => {
+                  return (
+                    <div key={event.title}>
+                      <img
+                        src={event.imageURL}
+                        style={{width: '200px', height: '200px'}}
+                      />
+                      <span>
+                        <div>
+                          <h4>{event.title}</h4>
+                          <h4>
+                            {new Date(event.date).toLocaleString('en-US')}
+                          </h4>
+                          <h4>{event.location}</h4>
+                        </div>
+                      </span>
                     </div>
-                  </span>
-                </div>
-              )
-            })}
-        </div>
+                  )
+                })}
+            </div>
+          </div>
+        )}
       </div>
     )
   }

@@ -10,9 +10,11 @@ import {
   AllEvents,
   SingleEvent,
   UserCart,
-  GuestCart
+  GuestCart,
+  ConfirmationPage
 } from './components'
 import {me} from './store'
+import {SingleEventAdmin} from './components/Admin/SingleEventAdmin'
 
 /**
  * COMPONENT
@@ -31,7 +33,7 @@ class Routes extends Component {
     return (
       <Switch>
         {/* Routes placed here are available to all visitors */}
-
+        <Route path="/ConfirmationPage" component={ConfirmationPage} />
         {/* <Route exact path="/guestCart" component={GuestCart} /> */}
 
         <Route exact path="/events" component={AllEvents} />
@@ -54,6 +56,7 @@ class Routes extends Component {
                 {/* Routes placed here are only available for admins */}
                 <Route exact path="/events/add/form" component={AddEvent} />
                 <Route path="/events/edit/:eventId" component={EditEvent} />
+                <Route exact path="/events/:id" component={SingleEventAdmin} />
               </Switch>
             )}
             <Route path="/userCart" component={UserCart} />
