@@ -8,10 +8,13 @@ class GuestCart extends React.Component {
     super()
     this.state = {orderEvents: []}
     this.handleChange = this.handleChange.bind(this)
+    this.handleDelete = this.handleDelete.bind(this)
   }
 
   async componentDidMount() {
     let orderEvents = []
+
+    // for test purposes:
     const obj = JSON.stringify({1: '2', 5: '10'})
     localStorage.setItem('cart', obj)
 
@@ -23,7 +26,6 @@ class GuestCart extends React.Component {
     }
     this.setState({orderEvents})
   }
-
 
   async handleChange(e) {
     const {id: eventId, value: ticketQuantity} = e.target
@@ -44,6 +46,22 @@ class GuestCart extends React.Component {
     }
   }
 
+  handleDelete({eventId}) {
+    const originalOrderEvents = this.state.orderEvents
+    const orderEvents = originalOrderEvents.filter(
+      orderEvent => orderEvent.eventId !== eventId
+    )
+    try {
+      const cart = JSON.parse(localStorage.getItem('cart'))
+      delete cart[eventId]
+      localStorage.setItem('cart', JSON.stringify(cart))
+      this.setState({orderEvents})
+    } catch (error) {
+      console.log(error)
+      this.setState({orderEvents: originalOrderEvents})
+    }
+  }
+
   render() {
     return (
       <div>
@@ -51,6 +69,7 @@ class GuestCart extends React.Component {
           <CartItem
             orderEvent={orderEvent}
             handleChange={this.handleChange}
+            handleDelete={this.handleDelete}
             key={orderEvent.eventId.toString()}
           />
         ))}

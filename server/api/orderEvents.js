@@ -42,11 +42,11 @@ router.put('/:orderEventId', async (req, res, next) => {
   }
 })
 
-router.delete('/:orderEventId', async (req, res, next) => {
+router.delete('/:eventId', async (req, res, next) => {
   try {
     await OrderEvent.destroy({
       where: {
-        id: req.params.orderEventId
+        id: req.params.eventId
       }
     })
     res.status(204)

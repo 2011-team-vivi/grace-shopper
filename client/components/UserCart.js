@@ -35,20 +35,37 @@ class UserCart extends React.Component {
     }
   }
 
+  async handleDelete({eventId}) {
+    const originalOrderEvents = this.state.orderEvents
+    const orderEvents = originalOrderEvents.filter(
+      orderEvent => orderEvent.eventId !== eventId
+    )
+    try {
+      await axios.delete(`/api/orderEvents/&{eventId}`)
+      this.setState({orderEvents})
+    } catch (error) {
+      console.log(error)
+      this.setState({orderEvents: originalOrderEvents})
+    }
+  }
+
   render() {
-    let count = 0
-    return this.state.orderEvents.map((orderEvent, i) => (
-      <>
-        <CartItem
-          orderEvent={orderEvent}
-          handleChange={this.handleChange}
-          key={i}
-        />
+    return (
+      <div>
+        {this.state.orderEvents.map(orderEvent => (
+          <CartItem
+            orderEvent={orderEvent}
+            handleChange={this.handleChange}
+            handleDelete={this.handleDelete}
+            key={orderEvent.eventId.toString()}
+          />
+        ))}
+
         <Link to="/ConfirmationPage">
-          <button type="button">Complete Order</button>
+          <button>Complete Order</button>
         </Link>
-      </>
-    ))
+      </div>
+    )
   }
 }
 
