@@ -1,0 +1,4 @@
+diff a/server/db/db.js b/server/db/db.js	(rejected hunks)
+@@ -7 +7 @@ const db = new Sequelize(
+-  process.env.DATABASE_URL || `postgres://localhost:5432/${databaseNamegit}`,
++  process.env.DATABASE_URL || `postgres://localhost:5432/${databaseName}`,
