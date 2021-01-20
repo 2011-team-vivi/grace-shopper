@@ -1,6 +1,6 @@
 const router = require('express').Router()
 const {User, Order, OrderEvent, Event} = require('../db/models')
-const auth = require('../middleware/auth') // add this middleware to protected routes
+const {authenticate, authorize} = require('../middleware/auth') // add this middleware to protected routes
 
 router.get('/', (req, res, next) => {
   const {id} = req.user
