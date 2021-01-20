@@ -2,7 +2,12 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {withRouter, Route, Switch} from 'react-router-dom'
 import PropTypes from 'prop-types'
-import {AddEvent, EditEvent, UserInfo} from './components/Admin'
+import {
+  AddEvent,
+  EditEvent,
+  UserInfo,
+  SingleEventAdmin
+} from './components/Admin'
 import {
   Login,
   Signup,
@@ -14,7 +19,6 @@ import {
   ConfirmationPage
 } from './components'
 import {me} from './store'
-import {SingleEventAdmin} from './components/Admin/SingleEventAdmin'
 
 /**
  * COMPONENT
@@ -57,6 +61,7 @@ class Routes extends Component {
                 <Route exact path="/events/add/form" component={AddEvent} />
                 <Route path="/events/edit/:eventId" component={EditEvent} />
                 <Route exact path="/events/:id" component={SingleEventAdmin} />
+                <Route path="/userCart" component={UserCart} />
               </Switch>
             )}
             <Route path="/userCart" component={UserCart} />
