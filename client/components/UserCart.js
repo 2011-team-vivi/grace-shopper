@@ -3,6 +3,7 @@ import axios from 'axios'
 import CartItem from './CartItem'
 import faker from 'faker'
 import {Link} from 'react-router-dom'
+import {connect} from 'react-redux'
 
 class UserCart extends React.Component {
   constructor() {
@@ -13,7 +14,9 @@ class UserCart extends React.Component {
   }
 
   async componentDidMount() {
-    const {data: order} = await axios.get('/api/orders/pending')
+    const {data: order} = await axios.get(
+      `/api/orders/pending/${this.props.userId}`
+    )
     this.setState({orderEvents: order.orderEvents, order})
   }
 
@@ -30,7 +33,9 @@ class UserCart extends React.Component {
     })
     this.setState({orderEvents})
     try {
-      await axios.put(`/api/orderEvents/${orderEventId}`, {ticketQuantity})
+      await axios.put(`/api/orderEvents/${orderEventId}/${this.props.userId}`, {
+        ticketQuantity
+      })
     } catch (error) {
       this.setState({orderEvents: originalOrderEvents})
     }
@@ -42,7 +47,7 @@ class UserCart extends React.Component {
       orderEvent => orderEvent.eventId !== eventId
     )
     try {
-      await axios.delete(`/api/orderEvents/${eventId}`)
+      await axios.delete(`/api/orderEvents/${eventId}/${this.props.userId}`)
       await this.setState({orderEvents})
     } catch (error) {
       this.setState({orderEvents: originalOrderEvents})
@@ -50,7 +55,6 @@ class UserCart extends React.Component {
   }
 
   render() {
-    console.log('render', this.state.orderEvents.length)
     return (
       <div>
         {this.state.orderEvents.map(orderEvent => (
@@ -70,4 +74,10 @@ class UserCart extends React.Component {
   }
 }
 
-export default UserCart
+const mapState = state => {
+  return {
+    userId: state.user.id
+  }
+}
+
+export default connect(mapState)(UserCart)

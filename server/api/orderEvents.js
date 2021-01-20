@@ -1,8 +1,8 @@
 const router = require('express').Router()
 const {User, Order, OrderEvent} = require('../db/models')
-const {authenticate, authorize} = require('../middleware/auth') // add this middleware to protected routes
+const {authenticate} = require('../middleware/auth') // add this middleware to protected routes
 
-router.post('/', async (req, res, next) => {
+router.post('/:userId', authenticate, async (req, res, next) => {
   try {
     // Find the current pending order
     console.log('foundddd')
@@ -32,7 +32,7 @@ router.post('/', async (req, res, next) => {
   }
 })
 
-router.put('/:orderEventId', async (req, res, next) => {
+router.put('/:orderEventId/:userId', authenticate, async (req, res, next) => {
   try {
     let orderEvent = await OrderEvent.findByPk(req.params.orderEventId)
     orderEvent.update({ticketQuantity: req.body.ticketQuantity}) // reload?
@@ -42,7 +42,7 @@ router.put('/:orderEventId', async (req, res, next) => {
   }
 })
 
-router.delete('/:eventId', async (req, res, next) => {
+router.delete('/:eventId/:userId', authenticate, async (req, res, next) => {
   try {
     await OrderEvent.destroy({
       where: {
