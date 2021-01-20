@@ -22,7 +22,7 @@ export const UserHome = props => {
 const mapState = state => {
   return {
     email: state.user.email,
-    isAdmin: state.user.isAdmin
+    isAdmin: !!state.user.isAdmin
   }
 }
 
@@ -33,5 +33,5 @@ export default connect(mapState)(UserHome)
  */
 UserHome.propTypes = {
   email: PropTypes.string,
-  isAdmin: PropTypes.string
+  isAdmin: PropTypes.bool
 }

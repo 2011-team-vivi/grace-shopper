@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {withRouter, Route, Switch} from 'react-router-dom'
 import PropTypes from 'prop-types'
-import {AddEvent, EditEvent, EventsAdmin, UserInfo} from './components/Admin'
+import {AddEvent, EditEvent, UserInfo} from './components/Admin'
 import {
   Login,
   Signup,
@@ -53,7 +53,11 @@ class Routes extends Component {
               <Switch>
                 {/* Routes placed here are only available for admins */}
                 <Route exact path="/events/add/form" component={AddEvent} />
-                <Route path="/events/edit/:eventId" component={EditEvent} />
+                <Route
+                  exact
+                  path="/events/edit/:eventId"
+                  component={EditEvent}
+                />
               </Switch>
             )}
             <Route path="/userCart" component={UserCart} />
