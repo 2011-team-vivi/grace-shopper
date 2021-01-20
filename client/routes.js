@@ -10,7 +10,8 @@ import {
   AllEvents,
   SingleEvent,
   UserCart,
-  GuestCart
+  GuestCart,
+  ConfirmationPage
 } from './components'
 import {me} from './store'
 import {SingleEventAdmin} from './components/Admin/SingleEventAdmin'
@@ -32,7 +33,7 @@ class Routes extends Component {
     return (
       <Switch>
         {/* Routes placed here are available to all visitors */}
-
+        <Route path="/ConfirmationPage" component={ConfirmationPage} />
         {/* <Route exact path="/guestCart" component={GuestCart} /> */}
 
         <Route exact path="/events" component={AllEvents} />
