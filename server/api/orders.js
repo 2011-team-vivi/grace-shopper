@@ -40,6 +40,27 @@ router.get('/pending', async (req, res, next) => {
   }
 })
 
+router.put(':orderId/', async (req, res, next) => {
+  try {
+    const order = await Order.findByPk(req.params.orderId)
+    const updatedOrder = order.update(req.body)
+    res.json(updatedOrder)
+  } catch (error) {
+    next(error)
+  }
+})
+
+router.post('/', async (req, res, next) => {
+  try {
+    Order.create({
+      userId: req.user.id,
+      status: 'pending'
+    })
+  } catch (error) {
+    next(error)
+  }
+})
+
 // router.delete('/:orderId', (req, res, next) => {
 //   Order.destroy({
 //     where: {

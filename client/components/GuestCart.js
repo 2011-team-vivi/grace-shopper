@@ -14,7 +14,7 @@ class GuestCart extends React.Component {
     let orderEvents = []
     const obj = JSON.stringify({1: '2', 5: '10'})
     localStorage.setItem('cart', obj)
-
+    console.log('this is the obj in local storage', obj)
     const cart = JSON.parse(localStorage.getItem('cart'))
     for (let eventId in cart) {
       const {data: event} = await axios.get(`/api/events/${eventId}`)
@@ -24,6 +24,9 @@ class GuestCart extends React.Component {
     this.setState({orderEvents})
   }
 
+  handleCheckOut() {
+    localStorage.clear()
+  }
 
   async handleChange(e) {
     const {id: eventId, value: ticketQuantity} = e.target
@@ -56,7 +59,7 @@ class GuestCart extends React.Component {
         ))}
 
         <Link to="/guestCheckout">
-          <button>Checkout</button>
+          <button onClick={this.handleCheckOut}>Complete Order</button>
         </Link>
       </div>
     )
