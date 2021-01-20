@@ -30,7 +30,7 @@ class GuestCart extends React.Component {
     localStorage.clear()
   }
 
-  async handleChange(e) {
+  handleChange(e) {
     const {id: eventId, value: ticketQuantity} = e.target
     const originalOrderEvents = this.state.orderEvents
     const orderEvents = originalOrderEvents.map(orderEvent => {
