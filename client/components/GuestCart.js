@@ -12,25 +12,35 @@ class GuestCart extends React.Component {
 
   async componentDidMount() {
     let orderEvents = []
-    for (let eventId of Object.keys(localStorage)) {
+    const obj = JSON.stringify({1: '2', 5: '10'})
+    localStorage.setItem('cart', obj)
+
+    const cart = JSON.parse(localStorage.getItem('cart'))
+    for (let eventId in cart) {
       const {data: event} = await axios.get(`/api/events/${eventId}`)
-      const ticketQuantity = localStorage.getItem(eventId)
+      const ticketQuantity = cart[eventId]
       orderEvents.push({eventId, ticketQuantity, event})
     }
     this.setState({orderEvents})
   }
 
   async handleChange(e) {
-    const eventId = e.target.id
-    const ticketQuantity = parseInt(e.target.value)
+    const {id: eventId, value: ticketQuantity} = e.target
     const originalOrderEvents = this.state.orderEvents
     const orderEvents = originalOrderEvents.map(orderEvent => {
       if (orderEvent.eventId === eventId) {
         return {...orderEvent, ticketQuantity}
       } else return orderEvent
     })
-    this.setState({orderEvents})
-    localStorage.setItem(eventId, ticketQuantity)
+    try {
+      const cart = JSON.parse(localStorage.getItem('cart'))
+      cart[eventId] = ticketQuantity
+      localStorage.setItem('cart', JSON.stringify(cart))
+      this.setState({orderEvents})
+    } catch (error) {
+      console.log(error)
+      this.setState({orderEvents: originalOrderEvents})
+    }
   }
 
   render() {

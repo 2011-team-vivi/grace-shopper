@@ -36,12 +36,13 @@ class UserCart extends React.Component {
   }
 
   render() {
-    return this.state.orderEvents.map(orderEvent => (
+    let count = 0
+    return this.state.orderEvents.map((orderEvent, i) => (
       <>
         <CartItem
           orderEvent={orderEvent}
           handleChange={this.handleChange}
-          key={(orderEvent.id + 15654684).toString()}
+          key={i}
         />
         <Link to="/userCheckout">
           <button>Checkout</button>
