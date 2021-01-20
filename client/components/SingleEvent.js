@@ -46,7 +46,7 @@ export class SingleEvent extends React.Component {
       })
 
       if (this.props.isLoggedIn) {
-        await axios.post(`/api/orderEvents/`, this.state)
+        await axios.post(`/api/orderEvents/${this.props.user.id}`, this.state)
       } else {
         if (!localStorage.getItem('cart')) {
           localStorage.setItem('cart', '{}')

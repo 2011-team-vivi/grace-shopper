@@ -54,7 +54,7 @@ export class SingleEventAdmin extends React.Component {
 
       if (this.props.isLoggedIn) {
         console.log(this.state)
-        await axios.post(`/api/orderEvents/`, this.state)
+        await axios.post(`/api/orderEvents/${this.props.user.id}`, this.state)
       } else if (!localStorage.getItem(this.state.eventId.toString())) {
         localStorage.setItem(
           this.state.eventId.toString(), // Key
@@ -92,6 +92,8 @@ export class SingleEventAdmin extends React.Component {
     const user = this.props.user
 
     console.log(this.props.isLoggedIn)
+    console.log('here are the props', this.props)
+
     return (
       <div>
         <h1>{event.title}</h1>
