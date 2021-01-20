@@ -24,19 +24,17 @@ export class AllEvents extends React.Component {
           <EventsAdmin />
         ) : (
           <div id="allEventsList">
-            <div id="eventCard">
+            <section id="eventCard">
               {allEvents[0] &&
                 allEvents.map(event => {
                   return (
                     <div key={event.title}>
+                      <img
+                        src={event.imageURL}
+                        style={{width: '200px', height: '200px'}}
+                      />
                       <div>
-                        <img
-                          src={event.imageURL}
-                          style={{width: '200px', height: '200px'}}
-                        />
-                      </div>
-                      <div>
-                        <strong>{event.title}</strong>
+                        <h3>{event.title}</h3>
                       </div>
                       <div>
                         Date and Time:
@@ -53,7 +51,7 @@ export class AllEvents extends React.Component {
                     </div>
                   )
                 })}
-            </div>
+            </section>
           </div>
         )}
       </div>
