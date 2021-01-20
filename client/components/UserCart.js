@@ -5,12 +5,17 @@ import faker from 'faker'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 
+
 class UserCart extends React.Component {
   constructor() {
     super()
-    this.state = {orderEvents: []}
+    this.state = {
+      orderEvents: [],
+      orderId: 0
+    }
     this.handleChange = this.handleChange.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
+    this.handleCheckOut = this.handleCheckOut.bind(this)
   }
 
   async componentDidMount() {
@@ -18,6 +23,16 @@ class UserCart extends React.Component {
       `/api/orders/pending/${this.props.userId}`
     )
     this.setState({orderEvents: order.orderEvents, order})
+  }
+  async handleCheckOut() {
+    try {
+      await axios.put(`api/orders/${orderId}`, {status: 'complete'})
+      //how do i make sure that the correct userId is assigned for the following request?
+      await axios.post('api/orders')
+    } catch (err) {
+      console.log(err)
+    }
+
   }
 
   async handleChange(e) {
@@ -67,7 +82,9 @@ class UserCart extends React.Component {
         ))}
 
         <Link to="/ConfirmationPage">
-          <button>Complete Order</button>
+          <button type="button" onClick={this.handleCheckOut}>
+            Complete Order
+          </button>
         </Link>
       </div>
     )

@@ -13,10 +13,10 @@ class GuestCart extends React.Component {
 
   async componentDidMount() {
     let orderEvents = []
-
     // for test purposes:
     // const obj = JSON.stringify({1: '2', 5: '10'})
     // localStorage.setItem('cart', obj)
+
 
     const cart = JSON.parse(localStorage.getItem('cart'))
     for (let eventId in cart) {
@@ -25,6 +25,10 @@ class GuestCart extends React.Component {
       orderEvents.push({eventId, ticketQuantity, event})
     }
     this.setState({orderEvents})
+  }
+
+  handleCheckOut() {
+    localStorage.clear()
   }
 
   async handleChange(e) {
@@ -75,7 +79,7 @@ class GuestCart extends React.Component {
         ))}
 
         <Link to="/guestCheckout">
-          <button>Checkout</button>
+          <button onClick={this.handleCheckOut}>Complete Order</button>
         </Link>
       </div>
     )
