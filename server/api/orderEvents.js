@@ -46,10 +46,10 @@ router.delete('/:eventId', async (req, res, next) => {
   try {
     await OrderEvent.destroy({
       where: {
-        id: req.params.eventId
+        eventId: parseInt(req.params.eventId)
       }
     })
-    res.status(204)
+    res.status(204).end()
   } catch (error) {
     next(error)
   }

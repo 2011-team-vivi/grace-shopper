@@ -15,8 +15,8 @@ class GuestCart extends React.Component {
     let orderEvents = []
 
     // for test purposes:
-    const obj = JSON.stringify({1: '2', 5: '10'})
-    localStorage.setItem('cart', obj)
+    // const obj = JSON.stringify({1: '2', 5: '10'})
+    // localStorage.setItem('cart', obj)
 
     const cart = JSON.parse(localStorage.getItem('cart'))
     for (let eventId in cart) {

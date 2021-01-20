@@ -9,6 +9,7 @@ class UserCart extends React.Component {
     super()
     this.state = {orderEvents: []}
     this.handleChange = this.handleChange.bind(this)
+    this.handleDelete = this.handleDelete.bind(this)
   }
 
   async componentDidMount() {
@@ -41,15 +42,15 @@ class UserCart extends React.Component {
       orderEvent => orderEvent.eventId !== eventId
     )
     try {
-      await axios.delete(`/api/orderEvents/&{eventId}`)
-      this.setState({orderEvents})
+      await axios.delete(`/api/orderEvents/${eventId}`)
+      await this.setState({orderEvents})
     } catch (error) {
-      console.log(error)
       this.setState({orderEvents: originalOrderEvents})
     }
   }
 
   render() {
+    console.log('render', this.state.orderEvents.length)
     return (
       <div>
         {this.state.orderEvents.map(orderEvent => (
