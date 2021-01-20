@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {withRouter, Route, Switch} from 'react-router-dom'
 import PropTypes from 'prop-types'
-import {AddEvent, EditEvent, EventsAdmin, UserInfo} from './components/Admin'
+import {AddEvent, EditEvent, UserInfo} from './components/Admin'
 import {
   Login,
   Signup,

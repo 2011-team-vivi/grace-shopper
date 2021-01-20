@@ -8,13 +8,16 @@ class GuestCart extends React.Component {
     super()
     this.state = {orderEvents: []}
     this.handleChange = this.handleChange.bind(this)
+    this.handleDelete = this.handleDelete.bind(this)
   }
 
   async componentDidMount() {
     let orderEvents = []
-    const obj = JSON.stringify({1: '2', 5: '10'})
-    localStorage.setItem('cart', obj)
-    console.log('this is the obj in local storage', obj)
+    // for test purposes:
+    // const obj = JSON.stringify({1: '2', 5: '10'})
+    // localStorage.setItem('cart', obj)
+
+
     const cart = JSON.parse(localStorage.getItem('cart'))
     for (let eventId in cart) {
       const {data: event} = await axios.get(`/api/events/${eventId}`)
@@ -47,6 +50,22 @@ class GuestCart extends React.Component {
     }
   }
 
+  handleDelete({eventId}) {
+    const originalOrderEvents = this.state.orderEvents
+    const orderEvents = originalOrderEvents.filter(
+      orderEvent => orderEvent.eventId !== eventId
+    )
+    try {
+      const cart = JSON.parse(localStorage.getItem('cart'))
+      delete cart[eventId]
+      localStorage.setItem('cart', JSON.stringify(cart))
+      this.setState({orderEvents})
+    } catch (error) {
+      console.log(error)
+      this.setState({orderEvents: originalOrderEvents})
+    }
+  }
+
   render() {
     return (
       <div>
@@ -54,6 +73,7 @@ class GuestCart extends React.Component {
           <CartItem
             orderEvent={orderEvent}
             handleChange={this.handleChange}
+            handleDelete={this.handleDelete}
             key={orderEvent.eventId.toString()}
           />
         ))}

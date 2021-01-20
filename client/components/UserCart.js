@@ -3,7 +3,8 @@ import axios from 'axios'
 import CartItem from './CartItem'
 import faker from 'faker'
 import {Link} from 'react-router-dom'
-import {noExtendLeft} from 'sequelize/types/lib/operators'
+import {connect} from 'react-redux'
+
 
 class UserCart extends React.Component {
   constructor() {
@@ -13,14 +14,16 @@ class UserCart extends React.Component {
       orderId: 0
     }
     this.handleChange = this.handleChange.bind(this)
+    this.handleDelete = this.handleDelete.bind(this)
     this.handleCheckOut = this.handleCheckOut.bind(this)
   }
 
   async componentDidMount() {
-    const {data: order} = await axios.get('/api/orders/pending')
-    this.setState({orderEvents: order.orderEvents, orderId: order.id})
+    const {data: order} = await axios.get(
+      `/api/orders/pending/${this.props.userId}`
+    )
+    this.setState({orderEvents: order.orderEvents, order})
   }
-
   async handleCheckOut() {
     try {
       await axios.put(`api/orders/${orderId}`, {status: 'complete'})
@@ -29,6 +32,7 @@ class UserCart extends React.Component {
     } catch (err) {
       console.log(err)
     }
+
   }
 
   async handleChange(e) {
@@ -44,29 +48,53 @@ class UserCart extends React.Component {
     })
     this.setState({orderEvents})
     try {
-      await axios.put(`/api/orderEvents/${orderEventId}`, {ticketQuantity})
+      await axios.put(`/api/orderEvents/${orderEventId}/${this.props.userId}`, {
+        ticketQuantity
+      })
+    } catch (error) {
+      this.setState({orderEvents: originalOrderEvents})
+    }
+  }
+
+  async handleDelete({eventId}) {
+    const originalOrderEvents = this.state.orderEvents
+    const orderEvents = originalOrderEvents.filter(
+      orderEvent => orderEvent.eventId !== eventId
+    )
+    try {
+      await axios.delete(`/api/orderEvents/${eventId}/${this.props.userId}`)
+      await this.setState({orderEvents})
     } catch (error) {
       this.setState({orderEvents: originalOrderEvents})
     }
   }
 
   render() {
-    let count = 0
-    return this.state.orderEvents.map((orderEvent, i) => (
-      <>
-        <CartItem
-          orderEvent={orderEvent}
-          handleChange={this.handleChange}
-          key={i}
-        />
+    return (
+      <div>
+        {this.state.orderEvents.map(orderEvent => (
+          <CartItem
+            orderEvent={orderEvent}
+            handleChange={this.handleChange}
+            handleDelete={this.handleDelete}
+            key={orderEvent.eventId.toString()}
+          />
+        ))}
+
         <Link to="/ConfirmationPage">
           <button type="button" onClick={this.handleCheckOut}>
             Complete Order
           </button>
         </Link>
-      </>
-    ))
+      </div>
+    )
   }
 }
 
-export default UserCart
+const mapState = state => {
+  return {
+    userId: state.user.id
+  }
+}
+
+export default connect(mapState)(UserCart)

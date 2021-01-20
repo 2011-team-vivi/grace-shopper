@@ -83,10 +83,6 @@ export class SingleEventAdmin extends React.Component {
       console.error(err)
     }
   }
-  // conditional rednering needed:
-  // if there are no tickets render - soldout
-  // if there are less than three tickets render - almost gone!
-  // if the price is 0 render its - freee
 
   render() {
     const event = this.props.event
