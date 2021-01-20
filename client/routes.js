@@ -13,6 +13,7 @@ import {
   GuestCart
 } from './components'
 import {me} from './store'
+import {SingleEventAdmin} from './components/Admin/SingleEventAdmin'
 
 /**
  * COMPONENT
@@ -54,6 +55,7 @@ class Routes extends Component {
                 {/* Routes placed here are only available for admins */}
                 <Route exact path="/events/add/form" component={AddEvent} />
                 <Route path="/events/edit/:eventId" component={EditEvent} />
+                <Route exact path="/events/:id" component={SingleEventAdmin} />
               </Switch>
             )}
             <Route path="/userCart" component={UserCart} />

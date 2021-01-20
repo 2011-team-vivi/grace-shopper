@@ -55,7 +55,7 @@ export class EventsAdmin extends React.Component {
                       {new Date(event.date).toLocaleString('en-US')}
                     </div>
                     <div>Location : {event.location}</div>
-                    <div>Price : ${event.price / 100}</div>
+                    <div>Price : ${event.price}</div>
                     <Link to={`/events/${event.id}`}>
                       <button type="button" className="details">
                         Details

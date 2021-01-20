@@ -32,7 +32,7 @@ router.get('/:id', async (req, res, next) => {
 router.delete('/:id', async (req, res, next) => {
   try {
     const event = await Event.destroy({where: {id: req.params.id}})
-    res.status(204).end()
+    res.status(204).send()
   } catch (err) {
     next(err)
   }
