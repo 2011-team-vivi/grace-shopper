@@ -20,7 +20,7 @@ class GuestCart extends React.Component {
     this.setState({orderEvents})
   }
 
-  async handleChange(e) {
+  handleChange(e) {
     const eventId = e.target.id
     const ticketQuantity = parseInt(e.target.value)
     const originalOrderEvents = this.state.orderEvents
@@ -41,8 +41,8 @@ class GuestCart extends React.Component {
           handleChange={this.handleChange}
           key={orderEvent.eventId.toString()}
         />
-        <Link to="/guestCheckout">
-          <button>Checkout</button>
+        <Link to="/ConfirmationPage">
+          <button type="button">Complete Order</button>
         </Link>
       </>
     ))

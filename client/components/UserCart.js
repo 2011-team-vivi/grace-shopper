@@ -43,8 +43,8 @@ class UserCart extends React.Component {
           handleChange={this.handleChange}
           key={(orderEvent.id + 15654684).toString()}
         />
-        <Link to="/userCheckout">
-          <button>Checkout</button>
+        <Link to="/ConfirmationPage">
+          <button type="button">Complete Order</button>
         </Link>
       </>
     ))
