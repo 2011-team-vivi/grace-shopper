@@ -5,7 +5,6 @@ import faker from 'faker'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 
-
 class UserCart extends React.Component {
   constructor() {
     super()
@@ -32,7 +31,6 @@ class UserCart extends React.Component {
     } catch (err) {
       console.log(err)
     }
-
   }
 
   async handleChange(e) {
@@ -80,12 +78,18 @@ class UserCart extends React.Component {
             key={orderEvent.eventId.toString()}
           />
         ))}
-
-        <Link to="/ConfirmationPage">
-          <button type="button" onClick={this.handleCheckOut}>
-            Complete Order
-          </button>
-        </Link>
+        {this.state.orderEvents.length > 0 ? (
+          <Link to="/ConfirmationPage">
+            <button type="button" onClick={this.handleCheckOut}>
+              Complete Order
+            </button>
+          </Link>
+        ) : (
+          <h3>
+            Your cart is empty! Click <Link to="/events">here</Link> to browse
+            events!
+          </h3>
+        )}
       </div>
     )
   }

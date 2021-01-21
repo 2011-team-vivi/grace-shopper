@@ -1,9 +1,12 @@
 body {
-  font-family: sans-serif;
+  font-family: 'Chakra Petch', sans-serif;
 }
 
 a {
   text-decoration: none;
+}
+#title {
+  color: darkblue;
 }
 
 label {
@@ -58,21 +61,16 @@ form div {
   order: 2;
 }
 
-#button {
-  display: inline-block;
-  background: rgb(44, 43, 97);
-  color: #fff;
-  padding: 0.8rem 1.8rem;
-  margin-top: 2rem;
-  cursor: pointer;
-}
-
-#button:hover {
-  opacity: 0.8;
-}
-
 @media (max-width: 700px) {
   #eventCard {
     display: block;
   }
+}
+
+#emailWelcome {
+  color: darkred;
+}
+
+#eventsHeader {
+  color: darkblue;
 }
