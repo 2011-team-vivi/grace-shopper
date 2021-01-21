@@ -19,7 +19,7 @@ export class AllEvents extends React.Component {
     const user = this.props.user
     return (
       <div>
-        <h1>All Events</h1>
+        <h1 id="eventsHeader">All Events</h1>
         {user.isAdmin ? (
           <EventsAdmin />
         ) : (

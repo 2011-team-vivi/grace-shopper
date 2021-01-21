@@ -10,8 +10,10 @@ export const UserHome = props => {
   const {isAdmin} = props
   return (
     <div>
-      <h1>{isAdmin ? 'ADMIN WORKS!' : ''}</h1>
-      <h3>Welcome, {email}</h3>
+      <h1>{isAdmin ? 'You are an ADMIN!' : ''}</h1>
+      <h1>
+        Welcome, <span id="emailWelcome">{email}</span>
+      </h1>
     </div>
   )
 }
